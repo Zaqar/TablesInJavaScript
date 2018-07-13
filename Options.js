@@ -27,25 +27,32 @@ Options.addRow = function() {
     input.size = "30";
     input.value = "";
     cell1.appendChild(input);
-
+    
     var btnSaveEdit = document.createElement("INPUT");
     btnSaveEdit.value = "Save";
     btnSaveEdit.type = "Button";
     cell2.appendChild(btnSaveEdit);
 
+    var textLastValue = input.value;
     Options.table.onkeydown = function(e) {
         if(e.keyCode == "27") {
-            btnSaveEdit.click(false);
+        	cell1.firstChild.value = textLastValue;
+        	btnSaveEdit.onclick();
         }
 
         if(e.keyCode == "13") {
-            btnSaveEdit.click();
+            btnSaveEdit.onclick();
         }
     }
 
-    btnSaveEdit.addEventListener("click", function() {
+    btnSaveEdit.onclick = function() {
         if(btnSaveEdit.value == "Save") {
-            cell1.innerText = cell1.firstChild.value;
+        	if(cell1.firstChild.value != "") {
+        		cell1.innerText = cell1.firstChild.value;
+        		textLastValue = cell1.innerText;
+        	} else {
+        		cell1.innerText = " ";
+        	}
             btnSaveEdit.value = "Edit";
         } else {
             input = document.createElement("INPUT");
@@ -56,14 +63,7 @@ Options.addRow = function() {
             cell1.appendChild(input);
             btnSaveEdit.value = "Save";
         }
-    }, false);
-
-    btnSaveEdit.addEventListener("click", function(isSave) {
-            if(!isSave) {
-                cell1.innerText = cell1.firstChild.value;
-                btnSaveEdit.value = "Edit";
-            }
-        }, false);
+    }
 
     var btnDelete = document.createElement("INPUT");
     btnDelete.value = "Delete";
